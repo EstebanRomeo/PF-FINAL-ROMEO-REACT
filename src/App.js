@@ -7,6 +7,8 @@ import Error from './Components/Error';
 import ItemDetailContainer from './Components/ItemDetailContainer/ItemDetailContainer';
 import Cart from './Components/Cart/Cart';
 import CartProvider from './Components/Context/CartContext';
+import Footer from './Components/Footer';
+
 
 function App() {
   return (
@@ -19,7 +21,7 @@ function App() {
     <Routes> 
 
      <Route path={'/'} element={ <ItemListContainer /> } />
-     <Route path={'/category/:id'} element={ <ItemListContainer /> } />
+     <Route path={'/categoria/:id'} element={ <ItemListContainer /> } />
      <Route path={'/item/:id'} element={ <ItemDetailContainer /> } />
      <Route path={"/cart"} element={<Cart/>} />
      <Route path={"/checkout"} element={<CheckOut/>} />
@@ -29,6 +31,7 @@ function App() {
 
  </CartProvider>
   </BrowserRouter>
+  <Footer/>
     </div>
   );
 }

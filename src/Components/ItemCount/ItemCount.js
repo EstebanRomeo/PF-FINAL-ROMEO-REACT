@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import ItemCountEstilos from "./ItemCountEstilos.css"
 
 const ItemCount = ({ initial, stock, onAdd }) => {
 	const [count, setCount] = useState(parseInt(initial));

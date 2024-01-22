@@ -1,39 +1,38 @@
-import { useState } from "react"
-import { useCartContext } from "../Context/CartContext"
-import {getFirestore, collection, addDoc, updateDoc, doc, getDoc} from 'firebase/firestore';
+import { useState } from 'react';
+import { useCartContext } from '../Context/CartContext';
+import {getFirestore, collection,addDoc,updateDoc,doc,getDoc,} from 'firebase/firestore';
+import CheckoutEstilos from './CheckoutEstilos.css';
 
-export const CheckOut = () =>{
-      const [nombre, setNombre] = useState('');
-      const [apellido, setApellido] = useState('');
-      const [telefono, setTelefono] = useState('');
-      const [email, setEmail] = useState('');
-      const [emailConfirmacion, setEmailConfirmacion] = useState('');
-      const [error, setError] = useState('');
-      const [ordenId, setOrdenId] = useState('');
-      const [mensaje, setMensaje] = useState('');
+export const CheckOut = () => {
+  const [nombre, setNombre] = useState('');
+  const [apellido, setApellido] = useState('');
+  const [telefono, setTelefono] = useState('');
+  const [email, setEmail] = useState('');
+  const [emailConfirmacion, setEmailConfirmacion] = useState('');
+  const [error, setError] = useState('');
+  const [ordenId, setOrdenId] = useState('');
+  const [mensaje, setMensaje] = useState('');
 
-     const {cart, totalPrice, removeProduct} = useCartContext();
+  const { cart, totalPrice, removeProduct } = useCartContext();
 
-     const manejadorFormulario = (event) =>{
-      event.preventDefault();
-     
+  const manejadorFormulario = async (event) => {
+    event.preventDefault();
 
-     if(!nombre || !apellido || !telefono || !email ||!emailConfirmacion ){
+    if (!nombre || !apellido || !telefono || !email || !emailConfirmacion) {
       setError('Por favor complete todos los campos requeridos');
       return;
-     }
+    }
 
-     if( email !== emailConfirmacion){
+    if (email !== emailConfirmacion) {
       setError('Los email no coinciden');
       return;
-     }
+    }
 
-
-     const total = totalPrice();
-     const orden ={
-      items: cart.map((producto)=>({
+    const total = totalPrice();
+    const orden = {
+      items: cart.map((producto) => ({
         id: producto.id,
-        nombre: producto.title,
+        nombre: producto.nombre,
         cantidad: producto.quantity,
       })),
       total: total,
@@ -42,96 +41,121 @@ export const CheckOut = () =>{
       apellido,
       telefono,
       email,
-     };
-     Promise.all(
-      orden.items.map(async (productoOrden)=>{
-             const db = getFirestore();
-             const productoRef = doc(db, 'products', productoOrden.id);
+    };
 
-             const productoDoc = await getDoc(productoRef);
-             const stockActual = productoDoc.data().stock;
+    try {
+      const db = getFirestore();
+      const batch = [];
 
-             await updateDoc( productoRef, {
-              stock: stockActual - productoOrden.cantidad,
-             });
-      })
-     )
-     .then(()=>{
-       const db = getFirestore();
-       addDoc(collection(db, 'orders'), orden)
-       .then((docRef)=>{
-        setOrdenId(docRef.id);
-        removeProduct();
-       })
-      .catch((error)=>{
-        console.log('No se pudo crear la orden', error);
-        setError('Error en la orden');
-      });
-     })
-     .catch((error)=>{
-      console.log('No se puede actualizar el stock', error);
-      setError('No se actualizo el stock');
-     });    
-    
-     setNombre('');
-     setApellido('');
-     setTelefono('');
-     setEmail('');
-     setEmailConfirmacion('');
-     setMensaje('');
-    
-};
-  return(
-        <div>
-          <h2> Complete el formulario para confirmar la compra </h2>
-           <form onSubmit={manejadorFormulario}>
-           
-            {cart.map((producto)=>(
-              <div key={producto.id}>
-                <p>{''} {producto.nombre} {producto.cantidad}</p>
-                <p>{producto.precio}</p>
-              </div>
-            ))}
+      for (const productoOrden of orden.items) {
+        const productoRef = doc(db, 'products', productoOrden.id);
+        const productoDoc = await getDoc(productoRef);
 
-          <div>
-           <label className="lab-check">Nombre:</label>
-             <input className="input-check" type="text" value={nombre} onChange={(e) => setNombre(e.target.value)}
-             />
-          </div>
+        if (productoDoc.exists()) {
+          const stockActual = productoDoc.data().stock;
 
-          <div>
-           <label className="lab-check">Apellido:</label>
-             <input className="input-check" type="text" value={apellido} onChange={(e) => setApellido(e.target.value)}
-             />
-          </div>
+          batch.push(
+            updateDoc(productoRef, {
+              stock: stockActual !== undefined ? stockActual - productoOrden.cantidad : 0,
+            })
+          );
+        } else {
+          console.log(`El producto con ID ${productoOrden.id} no existe.`);
+        }
+      }
 
-          <div>
-           <label className="lab-check">Telefono:</label>
-             <input className="input-check" type="number" value={telefono} onChange={(e) => setTelefono(e.target.value)}
-             />
-          </div>
+      await Promise.all(batch);
 
-          <div>
-           <label className="lab-check">Email:</label>
-             <input className="input-check" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-             />
-          </div>
-
-          <div>
-           <label className="lab-check">Confirmar email</label>
-             <input className="input-check" type="email" value={emailConfirmacion} onChange={(e) => setEmailConfirmacion(e.target.value)}
-             />
-          </div>
-
-
-          {error && <p>{error}</p>}
-          {ordenId && (
-            <p> ¡Gracias por tu compra ! Tu numero de seguimiento es: <br/> {''} {ordenId} {''} <br/></p>
-          )}
-           <div>
-            <button type="submit"> Enviar </button>
-           </div>
-          </form>
-        </div>
-     );
+      const docRef = await addDoc(collection(db, 'orders'), orden);
+      setOrdenId(docRef.id);
+      removeProduct();
+    } catch (error) {
+      console.error('Error en la transacción:', error);
+      setError('Error en la orden');
     }
+
+    setNombre('');
+    setApellido('');
+    setTelefono('');
+    setEmail('');
+    setEmailConfirmacion('');
+    setMensaje('');
+  };
+
+  return (
+    <div>
+      <h2>COMPLETE CON SUS DATOS PARA FINALIZAR LA COMPRA</h2>
+      <form className="form" onSubmit={manejadorFormulario}>
+        {cart.map((producto) => (
+          <div key={producto.id}>
+            <p>{''} {producto.nombre} {producto.cantidad}</p>
+            <p>{producto.precio}</p>
+          </div>
+        ))}
+
+        <div>
+          <p className="heading">INGRESE SUS DATOS</p>
+          <label className="input">Nombre:</label>
+          <input
+            className="input"
+            type="text"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="input">Apellido:</label>
+          <input
+            className="input"
+            type="text"
+            value={apellido}
+            onChange={(e) => setApellido(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="input">Telefono:</label>
+          <input
+            className="input"
+            type="number"
+            value={telefono}
+            onChange={(e) => setTelefono(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="input">Email:</label>
+          <input
+            className="input"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+
+        <div>
+          <label className="input">Confirmar email</label>
+          <input
+            className="input"
+            type="email"
+            value={emailConfirmacion}
+            onChange={(e) => setEmailConfirmacion(e.target.value)}
+          />
+        </div>
+
+        {error && <p>{error}</p>}
+        {ordenId && (
+          <p>
+            ¡Gracias por tu compra ! Tu numero de seguimiento es: <br /> {''} {ordenId} {''} <br />
+          </p>
+        )}
+        <div>
+          <button type="submit" className="btn">
+            Enviar
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+};

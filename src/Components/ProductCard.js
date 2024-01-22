@@ -1,9 +1,9 @@
 
-function ProductCard({img, title, price, children }) {
+function ProductCard({img, nombre, precio, children }) {
     return (
     <div>
      <img src={img} alt={title} />
-     <h2>{title}</h2>
+     <h2>{nombre}</h2>
      <p>{price}</p>
      <div> {children}</div>
     </div>

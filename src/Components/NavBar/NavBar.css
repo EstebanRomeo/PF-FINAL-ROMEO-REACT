@@ -2,8 +2,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #c2dbe9;
+  background-color: #C0B283;
   padding: 10px;
+  margin-bottom: 100px;
 }
 
 .navbar__logo {

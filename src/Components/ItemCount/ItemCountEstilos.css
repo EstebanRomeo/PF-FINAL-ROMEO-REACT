@@ -1,0 +1,40 @@
+.counter{
+    align-items: center;
+    justify-content: center;
+    padding-left: 33%;
+}
+
+.operacion{
+    padding: 20px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin: 8px;
+}
+
+
+button {
+    border: 1px solid black;
+    padding: 12px 30px 12px 30px;
+    border-radius: 30px;
+    background-color: #8b805b;
+    font-weight: bolder;
+    font-size: 15px;
+    box-shadow: 0px 0px 1px;
+    transform: all 2s esase;
+    transition-duration: .3s;
+  }
+  
+  button:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 7px 1px rgb(0, 0, 0);
+    border: 1px solid black;
+  }
+  
+  button:active {
+    transform: translateY(10px);
+    box-shadow: 0px 0px 1px;
+  }
+    
+  
+  
+

@@ -8,7 +8,7 @@ import { NavLink } from 'react-router-dom';
 
 function NavBar() {
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar variant="dark" expand="lg">
       <Container>
         <NavLink to="/" className="navbar-brand">
           <Logo />
@@ -16,17 +16,17 @@ function NavBar() {
         <Navbar.Toggle aria-controls="navbar-nav" />
         <Navbar.Collapse id="navbar-nav">
           <Nav className="me-auto">
-            <NavLink exact to="/" className="nav-link">
-              Home
+            <NavLink  to="/" exact="true" className="nav-link">
+              Inicio
             </NavLink>
-            <NavLink to="/category/celulares" className="nav-link">
-              Celulares
+            <NavLink to="/categoria/normales" className="nav-link">
+              Normales
             </NavLink>
-            <NavLink to="/category/notebooks" className="nav-link">
-              Notebooks
+            <NavLink to="/categoria/vegetales" className="nav-link">
+              Con vegetales
             </NavLink>
-            <NavLink to="/category/auriculares" className="nav-link">
-              Auriculares
+            <NavLink to="/categoria/especiales" className="nav-link">
+              Especiales
             </NavLink>
           </Nav>
           <NavLink to="/cart" className="navbar-cart">

@@ -21,7 +21,10 @@ const CartProvider = ({ children }) => {
   };
 
   const totalPrice = () => {
-    return cart.reduce((prev, act) => prev + act.quantity * act.price, 0);
+    return cart.reduce((prev, act) => {
+      const productPrice = typeof act.precio === 'number' ? act.precio : 0;
+      return prev + act.quantity * productPrice;
+    }, 0);
   };
 
   const totalProducts = () =>

@@ -1,17 +1,20 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAnalytics } from "firebase/analytics";
+//import { getFirestore } from "firebase/firestore"
 
-// Your web app's Firebase configuration
+
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCE1HOXtbpNyt54dluKi5ErILxmBDvugSM",
-  authDomain: "e-commerce-49895.firebaseapp.com",
-  projectId: "e-commerce-49895",
-  storageBucket: "e-commerce-49895.appspot.com",
-  messagingSenderId: "911100225002",
-  appId: "1:911100225002:web:fa88a6e4745c8acab4fe93"
+  apiKey: "AIzaSyD_l7hpGE6MVMbLEmD4wqPsVObRFHlwa4Y",
+  authDomain: "pf-romeo.firebaseapp.com",
+  projectId: "pf-romeo",
+  storageBucket: "pf-romeo.appspot.com",
+  messagingSenderId: "118827711276",
+  appId: "1:118827711276:web:9315984f76779840418a89",
+  measurementId: "G-M591NKN2BW"
 };
 
 // Initialize Firebase
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+//export const db = getFirestore(app);

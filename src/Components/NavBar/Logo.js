@@ -4,7 +4,7 @@ import './Logo.css'
 const Logo = () => {
   return (
     <div>
-      <img src='https://static.vecteezy.com/system/resources/thumbnails/024/553/534/small/lion-head-logo-mascot-wildlife-animal-illustration-generative-ai-png.png' className='logo' width= '50px' heigth= '50px' alt='logo' />
+      <img src='https://thumbs.dreamstime.com/b/plantilla-de-logotipo-pizzas-antiguas-vectorial-la-del-pizza-vintage-175718458.jpg' className='logo' width= '50px' heigth= '50px' alt='logo' />
     </div>
   )
 }

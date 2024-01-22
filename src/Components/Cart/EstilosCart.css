@@ -1,0 +1,35 @@
+.cartContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50vh;
+    background-color: #8b8148;
+  }
+  
+  .nElement {
+    text-align: center;
+  }
+
+
+
+
+.cartContainerFinal{
+    background-color: #b4aa71;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px;
+    margin: 200px;
+    border-radius: 16px;
+}
+
+.cartContainerFinal img{
+    height: 300px;
+    width: auto;
+}
+
+.pCart{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}

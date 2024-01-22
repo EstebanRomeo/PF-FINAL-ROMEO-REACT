@@ -1,0 +1,22 @@
+.footer{
+    background-color: #C0B283;
+    border-radius: 16px;
+    margin-top: 100px;
+}
+
+.text-footer{
+    padding: 10px;
+    color: rgb(0, 0, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+ul {
+    display: flex;
+    list-style: none;
+    padding: 15px;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
