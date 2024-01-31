@@ -5,7 +5,7 @@ logs
 **/*.back.*
 
 node_modules
-.node_modules/.cache/default-development/
+node_modules/.cache/default-development/
 bower_components
 
 *.sublime*
