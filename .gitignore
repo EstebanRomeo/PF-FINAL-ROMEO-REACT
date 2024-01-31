@@ -5,6 +5,7 @@ logs
 **/*.back.*
 
 node_modules
+.node_modules/.cache/default-development/
 bower_components
 
 *.sublime*
@@ -12,3 +13,4 @@ bower_components
 psd
 thumb
 sketch
+
